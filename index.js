@@ -16,11 +16,13 @@ const WINNINGS = [
 let currentPlayer = "X"
 let gameActive = true
 let draw = false
+lockBoard = false
 
 const play = position => {
     GAME_STATUS[position] = currentPlayer
     GAME_BOARD.children[position].textContent = currentPlayer
     checkWinner()
+    lockBoard = false
 }
 
 const generateRandomPosition = () => {
@@ -106,6 +108,7 @@ const handlePlayerChange = () => {
     currentPlayer = (currentPlayer === "X") ? "O" : "X"  
     showMessagge(currentPlayer)
     if (currentPlayer === "O"){
+        lockBoard = true
         NOTIFICATION.textContent = `The AI is thinking...🤔` 
         setTimeout(() => {
             IAgame()
@@ -145,6 +148,7 @@ const checkWinner = () => {
 }
 
 const handleCellClick = (event) => {
+    if (lockBoard) return
     const cellClicked = event.target
     
     if (cellClicked.classList.contains("game-cell") && cellClicked.textContent === "" && gameActive){
