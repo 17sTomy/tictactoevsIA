@@ -121,6 +121,10 @@ const IAgame = () => {
         checkPlaySecondOption(j)
         j++
     }
+
+    if (!collocated){
+        generateRandomPosition()
+    }
 }
 
 const showMessagge = currentPlayer => {
