@@ -16,7 +16,7 @@ const WINNINGS = [
 let currentPlayer = "X"
 let gameActive = true
 let draw = false
-lockBoard = false
+let lockBoard = false
 
 const play = position => {
     GAME_STATUS[position] = currentPlayer
