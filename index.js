@@ -102,7 +102,7 @@ const IAgame = () => {
 
 const showMessagge = currentPlayer => {
     if (gameActive && !draw) {
-        NOTIFICATION.textContent = `Player "${currentPlayer}" turn...`  
+        NOTIFICATION.textContent = (currentPlayer === "X") ? `Player "${currentPlayer}" turn...` : NOTIFICATION.textContent = `The AI is thinking...🤔`  
     }else if (!gameActive && !draw){
         NOTIFICATION.textContent = `Player "${currentPlayer}" wins!`  
     }else if (draw){
@@ -115,10 +115,9 @@ const handlePlayerChange = () => {
     showMessagge(currentPlayer)
     if (currentPlayer === "O"){
         lockBoard = true
-        NOTIFICATION.textContent = `The AI is thinking...🤔` 
         setTimeout(() => {
             IAgame()
-        }, 1000);
+        }, 900);
     }
 }
 
