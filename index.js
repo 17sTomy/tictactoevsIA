@@ -1,28 +1,30 @@
-const GAME_BOARD = document.querySelector(".game-container")
-const $BTN_RESET = document.querySelector(".game-restart")
-const NOTIFICATION = document.querySelector(".game-notification")
-const GAME_STATUS = ["", "", "", "", "", "", "", "", ""]
-const WINNINGS = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ]
+const GAME_BOARD = document.querySelector(".game-container"),
+    $BTN_RESET = document.querySelector(".game-restart"),
+    NOTIFICATION = document.querySelector(".game-notification"),
+    GAME_STATUS = ["", "", "", "", "", "", "", "", ""],
+    WINNINGS = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ]
 
-let currentPlayer = "X"
-let gameActive = true
-let draw = false
-let lockBoard = false
+let currentPlayer = "X",
+    gameActive = true,
+    draw = false,
+    lockBoard = false,
+    collocated
 
 const play = position => {
     GAME_STATUS[position] = currentPlayer
     GAME_BOARD.children[position].textContent = currentPlayer
     checkWinner()
     lockBoard = false
+    collocated = true
 }
 
 const generateRandomPosition = () => {
@@ -34,67 +36,68 @@ const generateRandomPosition = () => {
     return
 }
 
-const IAgame = () => {
-    for (chance of WINNINGS){  
-        posicion1 = chance[0]
-        posicion2 = chance[1]
-        posicion3 = chance[2]
-
-        if (GAME_STATUS[posicion1] === "X" && GAME_STATUS[posicion2] === "X" && GAME_STATUS[posicion3] === ""){
-            play(posicion3)
-            return
-        }else if (GAME_STATUS[posicion1] === "X" && GAME_STATUS[posicion2] === "" && GAME_STATUS[posicion3] === "X"){
-            play(posicion2)
-            return
-        }else if (GAME_STATUS[posicion1] === "" && GAME_STATUS[posicion2] === "X" && GAME_STATUS[posicion3] === "X"){
-            play(posicion1)
-            return
-        }else if (GAME_STATUS[posicion1] === "O" && GAME_STATUS[posicion2] === "O" && GAME_STATUS[posicion3] === ""){
-            play(posicion3)
-            return
-        }else if (GAME_STATUS[posicion1] === "O" && GAME_STATUS[posicion2] === "" && GAME_STATUS[posicion3] === "O"){
-            play(posicion2)
-            return
-        }else if (GAME_STATUS[posicion1] === "" && GAME_STATUS[posicion2] === "O" && GAME_STATUS[posicion3] === "O"){
-            play(posicion1)
-            return
-        }else if ((GAME_STATUS[posicion1] === "X" || GAME_STATUS[posicion2] === "X" || GAME_STATUS[posicion3] === "X") &&  GAME_STATUS[4] === ""){
-            play(4)
-            return
-        }else if (GAME_STATUS[4] === "X" && !GAME_STATUS.includes("O")){
-            randomPosition = Math.floor(Math.random() * 9)
-            while (randomPosition === 4 || GAME_STATUS[randomPosition] !== "") {
-                randomPosition = Math.floor(Math.random() * 9)
-            }
-            play(randomPosition)
-            return
-        }else if (GAME_STATUS[posicion1] === "" && GAME_STATUS[posicion2] === "O" && GAME_STATUS[posicion3] === ""){
-            randomPosition = Math.floor(Math.random() * 9)
-            while (randomPosition === 4 || GAME_STATUS[randomPosition] !== "") {
-                randomPosition = Math.floor(Math.random() * 9)
-            }
-            play(randomPosition)
-            return
-        }else if (GAME_STATUS[4] === ""){
-            play(4)
-            return
-        }else if (GAME_STATUS[2] === "X" && GAME_STATUS[4] === "X" && GAME_STATUS[6] === "O"){
-            generateRandomPosition()
-            return
-        }else if (GAME_STATUS[0] === "X" && GAME_STATUS[4] === "X" && GAME_STATUS[6] === "O"){
-            generateRandomPosition()
-            return
-        }else if (GAME_STATUS[8] === "X" && GAME_STATUS[5] === "X" && GAME_STATUS[2] === ""){
-            play(2)
-            return
-        }else if (GAME_STATUS[0] === "O" && GAME_STATUS[4] === "X" && GAME_STATUS[8] === "X"){
-            generateRandomPosition()
-            return
-        }else if (GAME_STATUS[2] === "O" && GAME_STATUS[4] === "X" && GAME_STATUS[6] === "X"){
-            generateRandomPosition()
-            return
-        }
+const checkPlay = chance => {
+    const chances = WINNINGS[chance]
+    let position1 = chances[0]
+    let position2 = chances[1]
+    let position3 = chances[2]
+    
+    //Oportunidades para ganar la partida
+    if (GAME_STATUS[position1] === "O" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === ""){
+        play(position3)
+        return
+    }else if (GAME_STATUS[position1] === "O" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === "O"){
+        play(position2)
+        return
+    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === "O"){
+        play(position1)
+        return
     }
+
+    //Oportunidades para no perder la partida
+    else if (GAME_STATUS[position1] === "X" && GAME_STATUS[position2] === "X" && GAME_STATUS[position3] === ""){
+        play(position3)
+        return
+    }else if (GAME_STATUS[position1] === "X" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === "X"){
+        play(position2)
+        return
+    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "X" && GAME_STATUS[position3] === "X"){
+        play(position1)
+        return
+    }
+
+    //Siempre colocarse en el medio si está desocupado
+    else if (GAME_STATUS.includes("X") && !GAME_STATUS.includes("O") && GAME_STATUS[4] !== "X"){
+        play(4)
+        return
+    }
+
+    //Si el usuario se coloca en el medio, ponerse en una posicion random
+    else if (GAME_STATUS.includes("X") && !GAME_STATUS.includes("O") && GAME_STATUS[4] === "X"){
+        generateRandomPosition()
+        return
+    }
+
+    //Si tiene dos opciones libres, elige una
+    else if (GAME_STATUS[position1] === "O" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === ""){
+        play(position2)
+        return
+    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === ""){
+        play(position1)
+        return
+    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === "O"){
+        play(position2)
+        return
+    }
+}
+
+const IAgame = () => {
+    collocated = false
+    let i = 0
+    while (!collocated){
+        checkPlay(i)
+        i++
+    }    	
 }
 
 const showMessagge = currentPlayer => {
@@ -111,7 +114,7 @@ const handlePlayerChange = () => {
     currentPlayer = (currentPlayer === "X") ? "O" : "X"  
     showMessagge(currentPlayer)
     if (currentPlayer === "O"){
-        lockBoard = true
+        // lockBoard = true
         NOTIFICATION.textContent = `The AI is thinking...🤔` 
         setTimeout(() => {
             IAgame()
