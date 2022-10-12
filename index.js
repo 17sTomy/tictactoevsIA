@@ -17,7 +17,7 @@ let currentPlayer = "X",
     gameActive = true,
     draw = false,
     lockBoard = false,
-    collocated
+    located
 
 
 const mixArray = array => {
@@ -34,7 +34,7 @@ const play = position => {
     GAME_BOARD.children[position].textContent = currentPlayer
     checkWinner()
     lockBoard = false
-    collocated = true
+    located = true
 }
 
 const generateRandomPosition = () => {
@@ -109,20 +109,18 @@ const checkPlay = chance => {
 }
 
 const IAgame = () => {
-    collocated = false
+    located = false
     let i = 0
-    while (!collocated && i < WINNINGS.length){
+    while (!located && i < WINNINGS.length){
         checkPlay(i)
         i++
     }    	
-
     j = 0
-    while (!collocated && j < WINNINGS.length){
+    while (!located && j < WINNINGS.length){
         checkPlaySecondOption(j)
         j++
     }
-
-    if (!collocated){
+    if (!located){
         generateRandomPosition()
     }
 }
@@ -154,7 +152,6 @@ const handleCellPlayed = (clickedCellIndex, cellClicked) => {
 }
 
 const checkWinner = () => {
-    console.log(GAME_STATUS);
     for (chance of WINNINGS){
         posicion1 = chance[0]
         posicion2 = chance[1]
