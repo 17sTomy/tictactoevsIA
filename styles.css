@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500&family=Roboto:wght@400;500&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", "sans-serif";
+}
+
+body{
+    background-color: rgb(15, 15, 15);
+    color: #FF577F;
+}
+
+h1{
+    text-align: center;
+    padding: 20px;
+}
+
+.container{
+    width: 95%;
+    margin: 0 auto;
+}
+
+.game-container{
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    justify-content: center;
+}
+
+.game-cell{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80px;
+    border: 1px solid #FF577F;
+    height: 100px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.game-cell:hover{
+    background-color: rgb(20, 20, 20);
+    border: 2px solid #FF577F;
+}
+
+.game-info{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.game-notification{
+    font-weight: 400;
+    padding: 20px;
+}
+
+.game-restart{
+    background-color: #FF577F;
+    color: #000;
+    border: none;
+    padding: 10px;
+    width: 80%;
+    font-size: 18px;
+    font-family: "Roboto", "sans-serif";
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: .5s;
+}
+
+.game-restart:hover{
+    background-color: rgb(20, 20, 20);
+    border: 1px solid #FF577F;
+    color: #FF577F;
+}
+
+@media screen and (min-width: 480px){
+    .game-info{
+        justify-content: center;
+        width: 500px;
+    }
+    
+    .game-restart{
+        text-align: center;
+        width: 360px;
+    }
+}
