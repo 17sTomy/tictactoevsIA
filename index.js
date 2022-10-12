@@ -3,14 +3,14 @@ const GAME_BOARD = document.querySelector(".game-container"),
     NOTIFICATION = document.querySelector(".game-notification"),
     GAME_STATUS = ["", "", "", "", "", "", "", "", ""],
     WINNINGS = [
-        [0, 4, 8],
         [0, 1, 2],
-        [0, 3, 6],
-        [2, 4, 6],
         [3, 4, 5],
-        [1, 4, 7],
         [6, 7, 8],
-        [2, 5, 8]
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
     ]
 
 let currentPlayer = "X",
@@ -18,6 +18,16 @@ let currentPlayer = "X",
     draw = false,
     lockBoard = false,
     collocated
+
+
+const mixArray = array => {
+    for (let i = array.length - 1; i > 0; i--) {
+        let randomIndex = Math.floor(Math.random() * (i + 1));
+        let temporal = array[i];
+        array[i] = array[randomIndex];
+        array[randomIndex] = temporal;
+    }
+}
 
 const play = position => {
     GAME_STATUS[position] = currentPlayer
@@ -36,11 +46,34 @@ const generateRandomPosition = () => {
     return
 }
 
+const checkPlaySecondOption = (chance) => {
+    const chances = WINNINGS[chance]
+    let position1 = chances[0],
+        position2 = chances[1],
+        position3 = chances[2]
+    
+    //Si tiene dos opciones libres, elige una
+    if (GAME_STATUS[position1] === "O" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === ""){
+        play(position2)
+        return
+    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === ""){
+        play(position1)
+        return
+    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === "O"){
+        play(position2)
+        return
+    }
+}
+
 const checkPlay = chance => {
     const chances = WINNINGS[chance]
-    let position1 = chances[0]
-    let position2 = chances[1]
-    let position3 = chances[2]
+    if (chances === undefined) {
+        generateRandomPosition()
+        return
+    }
+    let position1 = chances[0],
+        position2 = chances[1],
+        position3 = chances[2]
     
     //Oportunidades para ganar la partida
     if (GAME_STATUS[position1] === "O" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === ""){
@@ -77,27 +110,21 @@ const checkPlay = chance => {
         generateRandomPosition()
         return
     }
-
-    //Si tiene dos opciones libres, elige una
-    else if (GAME_STATUS[position1] === "O" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === ""){
-        play(position2)
-        return
-    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === ""){
-        play(position1)
-        return
-    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === "O"){
-        play(position2)
-        return
-    }
 }
 
 const IAgame = () => {
     collocated = false
     let i = 0
-    while (!collocated){
+    while (!collocated && i <= WINNINGS.length){
         checkPlay(i)
         i++
     }    	
+
+    j = 0
+    while (!collocated && j <= WINNINGS.length){
+        checkPlaySecondOption(j)
+        j++
+    }
 }
 
 const showMessagge = currentPlayer => {
@@ -178,7 +205,9 @@ const resetGameStatus = () => {
         GAME_STATUS[i] = ""
         i--
     }
+    mixArray(WINNINGS)
 }
 
 $BTN_RESET.addEventListener('click', handleRestartGame)
 GAME_BOARD.addEventListener('click', handleCellClick)
+document.addEventListener("DOMContentLoaded", mixArray(WINNINGS))
