@@ -3,14 +3,14 @@ const GAME_BOARD = document.querySelector(".game-container"),
     NOTIFICATION = document.querySelector(".game-notification"),
     GAME_STATUS = ["", "", "", "", "", "", "", "", ""],
     WINNINGS = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
         [0, 4, 8],
-        [2, 4, 6]
+        [0, 1, 2],
+        [0, 3, 6],
+        [2, 4, 6],
+        [3, 4, 5],
+        [1, 4, 7],
+        [6, 7, 8],
+        [2, 5, 8]
     ]
 
 let currentPlayer = "X",
@@ -114,7 +114,7 @@ const handlePlayerChange = () => {
     currentPlayer = (currentPlayer === "X") ? "O" : "X"  
     showMessagge(currentPlayer)
     if (currentPlayer === "O"){
-        // lockBoard = true
+        lockBoard = true
         NOTIFICATION.textContent = `The AI is thinking...🤔` 
         setTimeout(() => {
             IAgame()
