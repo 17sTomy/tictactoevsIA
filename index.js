@@ -90,6 +90,9 @@ const IAgame = () => {
         }else if (GAME_STATUS[0] === "O" && GAME_STATUS[4] === "X" && GAME_STATUS[8] === "X"){
             generateRandomPosition()
             return
+        }else{
+            generateRandomPosition()
+            return
         }
     }
 }
