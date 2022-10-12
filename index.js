@@ -67,10 +67,6 @@ const checkPlaySecondOption = (chance) => {
 
 const checkPlay = chance => {
     const chances = WINNINGS[chance]
-    if (chances === undefined) {
-        generateRandomPosition()
-        return
-    }
     let position1 = chances[0],
         position2 = chances[1],
         position3 = chances[2]
@@ -115,13 +111,13 @@ const checkPlay = chance => {
 const IAgame = () => {
     collocated = false
     let i = 0
-    while (!collocated && i <= WINNINGS.length){
+    while (!collocated && i < WINNINGS.length){
         checkPlay(i)
         i++
     }    	
 
     j = 0
-    while (!collocated && j <= WINNINGS.length){
+    while (!collocated && j < WINNINGS.length){
         checkPlaySecondOption(j)
         j++
     }
