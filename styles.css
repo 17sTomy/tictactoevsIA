@@ -8,8 +8,11 @@
 }
 
 body{
-    background-color: rgb(15, 15, 15);
-    color: #FF577F;
+    /* background-color: rgb(15, 15, 15); */
+    /* background-color: #aacf0c;
+    background-image: linear-gradient(43deg, #aacf0c 0%, #50c882 46%, #0ccf79 100%); */
+    background-image: linear-gradient( 109.6deg,  rgba(61,245,167,1) 11.2%, rgba(9,111,224,1) 91.1% );
+    color: rgb(15, 15, 15);
 }
 
 h1{
@@ -20,6 +23,7 @@ h1{
 .container{
     width: 95%;
     margin: 0 auto;
+    height: 100vh;
 }
 
 .game-container{
@@ -34,15 +38,15 @@ h1{
     justify-content: center;
     align-items: center;
     font-size: 80px;
-    border: 1px solid #FF577F;
+    border: 3px solid rgb(15, 15, 15);
     height: 100px;
     cursor: pointer;
     transition: .2s;
 }
 
 .game-cell:hover{
-    background-color: rgb(20, 20, 20);
-    border: 2px solid #FF577F;
+    background-color: #aacf0c;
+    border: 2px solid rgb(15, 15, 15);
 }
 
 .game-info{
@@ -60,8 +64,8 @@ h1{
 }
 
 .game-restart{
-    background-color: #FF577F;
-    color: #000;
+    background-color: rgb(15, 15, 15);
+    color: #3DF5A7;
     border: none;
     padding: 10px;
     width: 80%;
@@ -74,9 +78,9 @@ h1{
 }
 
 .game-restart:hover{
-    background-color: rgb(20, 20, 20);
-    border: 1px solid #FF577F;
-    color: #FF577F;
+    background-color: #aacf0c;
+    /* border: 1px solid rgb(15, 15, 15); */
+    color: rgb(15, 15, 15);
 }
 
 @media screen and (min-width: 480px){

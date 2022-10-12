@@ -17,6 +17,20 @@ let currentPlayer = "X"
 let gameActive = true
 let draw = false
 
+const play = position => {
+    GAME_STATUS[position] = currentPlayer
+    GAME_BOARD.children[position].textContent = currentPlayer
+    checkWinner()
+}
+
+const generateRandomPosition = () => {
+    randomPosition = Math.floor(Math.random() * 9)
+    while (GAME_STATUS[randomPosition] !== "") {
+        randomPosition = Math.floor(Math.random() * 9)
+    }
+    play(randomPosition)
+    return
+}
 
 const IAgame = () => {
     for (chance of WINNINGS){  
@@ -25,57 +39,54 @@ const IAgame = () => {
         posicion3 = chance[2]
 
         if (GAME_STATUS[posicion1] === "X" && GAME_STATUS[posicion2] === "X" && GAME_STATUS[posicion3] === ""){
-            GAME_STATUS[posicion3] = currentPlayer
-            GAME_BOARD.children[posicion3].textContent = currentPlayer
-            checkWinner()
+            play(posicion3)
             return
         }else if (GAME_STATUS[posicion1] === "X" && GAME_STATUS[posicion2] === "" && GAME_STATUS[posicion3] === "X"){
-            GAME_STATUS[posicion2] = currentPlayer
-            GAME_BOARD.children[posicion2].textContent = currentPlayer
-            checkWinner()
+            play(posicion2)
             return
         }else if (GAME_STATUS[posicion1] === "" && GAME_STATUS[posicion2] === "X" && GAME_STATUS[posicion3] === "X"){
-            GAME_STATUS[posicion1] = currentPlayer
-            GAME_BOARD.children[posicion1].textContent = currentPlayer
-            checkWinner()
+            play(posicion1)
             return
         }else if (GAME_STATUS[posicion1] === "O" && GAME_STATUS[posicion2] === "O" && GAME_STATUS[posicion3] === ""){
-            GAME_STATUS[posicion3] = currentPlayer
-            GAME_BOARD.children[posicion3].textContent = currentPlayer
-            checkWinner()
+            play(posicion3)
             return
         }else if (GAME_STATUS[posicion1] === "O" && GAME_STATUS[posicion2] === "" && GAME_STATUS[posicion3] === "O"){
-            GAME_STATUS[posicion2] = currentPlayer
-            GAME_BOARD.children[posicion2].textContent = currentPlayer
-            checkWinner()
+            play(posicion2)
             return
         }else if (GAME_STATUS[posicion1] === "" && GAME_STATUS[posicion2] === "O" && GAME_STATUS[posicion3] === "O"){
-            GAME_STATUS[posicion1] = currentPlayer
-            GAME_BOARD.children[posicion1].textContent = currentPlayer
-            checkWinner()
+            play(posicion1)
             return
         }else if ((GAME_STATUS[posicion1] === "X" || GAME_STATUS[posicion2] === "X" || GAME_STATUS[posicion3] === "X") &&  GAME_STATUS[4] === ""){
-            GAME_STATUS[4] = currentPlayer
-            GAME_BOARD.children[4].textContent = currentPlayer
-            checkWinner()
+            play(4)
             return
         }else if (GAME_STATUS[4] === "X" && !GAME_STATUS.includes("O")){
             randomPosition = Math.floor(Math.random() * 9)
             while (randomPosition === 4 || GAME_STATUS[randomPosition] !== "") {
                 randomPosition = Math.floor(Math.random() * 9)
             }
-            GAME_STATUS[randomPosition] = currentPlayer
-            GAME_BOARD.children[randomPosition].textContent = currentPlayer
-            checkWinner()
+            play(randomPosition)
             return
         }else if (GAME_STATUS[posicion1] === "" && GAME_STATUS[posicion2] === "O" && GAME_STATUS[posicion3] === ""){
             randomPosition = Math.floor(Math.random() * 9)
             while (randomPosition === 4 || GAME_STATUS[randomPosition] !== "") {
                 randomPosition = Math.floor(Math.random() * 9)
             }
-            GAME_STATUS[randomPosition] = currentPlayer
-            GAME_BOARD.children[randomPosition].textContent = currentPlayer
-            checkWinner()
+            play(randomPosition)
+            return
+        }else if (GAME_STATUS[4] === ""){
+            play(4)
+            return
+        }else if (GAME_STATUS[2] === "X" && GAME_STATUS[4] === "X" && GAME_STATUS[6] === "O"){
+            generateRandomPosition()
+            return
+        }else if (GAME_STATUS[0] === "X" && GAME_STATUS[4] === "X" && GAME_STATUS[6] === "O"){
+            generateRandomPosition()
+            return
+        }else if (GAME_STATUS[8] === "X" && GAME_STATUS[5] === "X" && GAME_STATUS[2] === ""){
+            play(2)
+            return
+        }else if (GAME_STATUS[0] === "O" && GAME_STATUS[4] === "X" && GAME_STATUS[8] === "X"){
+            generateRandomPosition()
             return
         }
     }
@@ -125,8 +136,10 @@ const checkWinner = () => {
             }
         }
     }
-    if (GAME_STATUS.indexOf("") == -1){
+    if (GAME_STATUS.indexOf("") === -1){
         draw = true
+        showMessagge(currentPlayer)
+        return
     }
     handlePlayerChange()
 }
