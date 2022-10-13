@@ -20,15 +20,6 @@ let currentPlayer = "X",
     located
 
 
-const mixArray = array => {
-    for (let i = array.length - 1; i > 0; i--) {
-        let randomIndex = Math.floor(Math.random() * (i + 1));
-        let temporal = array[i];
-        array[i] = array[randomIndex];
-        array[randomIndex] = temporal;
-    }
-}
-
 const play = position => {
     GAME_STATUS[position] = currentPlayer
     GAME_BOARD.children[position].textContent = currentPlayer
@@ -42,11 +33,19 @@ const generateRandomPosition = () => {
     while (GAME_STATUS[randomPosition] !== "") {
         randomPosition = Math.floor(Math.random() * 9)
     }
-    play(randomPosition)
-    return
+    return randomPosition
 }
 
-const checkPlaySecondOption = (chance) => {
+const goToCorners = () => {
+    const corners = [0, 2, 6, 8]
+    randomCorner = Math.floor(Math.random() * corners.length)
+    while (GAME_STATUS[randomCorner] !== "") {
+        randomCorner = Math.floor(Math.random() * corners.length)
+    }
+    return corners[randomCorner]
+}
+
+const checkPlay3 = (chance) => {
     const chances = WINNINGS[chance]
     let position1 = chances[0],
         position2 = chances[1],
@@ -65,6 +64,22 @@ const checkPlaySecondOption = (chance) => {
     }
 }
 
+const checkPlay2 = chance => {
+    const chances = WINNINGS[chance]
+    let position1 = chances[0],
+        position2 = chances[1],
+        position3 = chances[2]
+
+    //Oportunidades para no perder la partida
+    if (GAME_STATUS[position1] === "X" && GAME_STATUS[position2] === "X" && GAME_STATUS[position3] === ""){
+        play(position3)
+    }else if (GAME_STATUS[position1] === "X" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === "X"){
+        play(position2)
+    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "X" && GAME_STATUS[position3] === "X"){
+        play(position1)
+    }
+}
+
 const checkPlay = chance => {
     const chances = WINNINGS[chance]
     let position1 = chances[0],
@@ -74,54 +89,52 @@ const checkPlay = chance => {
     //Oportunidades para ganar la partida
     if (GAME_STATUS[position1] === "O" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === ""){
         play(position3)
-        return
     }else if (GAME_STATUS[position1] === "O" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === "O"){
         play(position2)
-        return
     }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === "O"){
         play(position1)
-        return
-    }
-
-    //Oportunidades para no perder la partida
-    else if (GAME_STATUS[position1] === "X" && GAME_STATUS[position2] === "X" && GAME_STATUS[position3] === ""){
-        play(position3)
-        return
-    }else if (GAME_STATUS[position1] === "X" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === "X"){
-        play(position2)
-        return
-    }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "X" && GAME_STATUS[position3] === "X"){
-        play(position1)
-        return
     }
 
     //Siempre colocarse en el medio si está desocupado
     else if (GAME_STATUS.includes("X") && !GAME_STATUS.includes("O") && GAME_STATUS[4] !== "X"){
         play(4)
-        return
     }
 
-    //Si el usuario se coloca en el medio, ponerse en una posicion random
+    //Si el usuario se coloca en el medio, ponerse en alguna esquina
     else if (GAME_STATUS.includes("X") && !GAME_STATUS.includes("O") && GAME_STATUS[4] === "X"){
-        generateRandomPosition()
-        return
+        let corner = goToCorners()
+        play(corner)
     }
 }
 
 const IAgame = () => {
     located = false
+
+    // Primero chequea si puede ganar
     let i = 0
     while (!located && i < WINNINGS.length){
         checkPlay(i)
         i++
-    }    	
+    } 
+
+    // Si no puede ganar, se fija si puede perder
     j = 0
     while (!located && j < WINNINGS.length){
-        checkPlaySecondOption(j)
+        checkPlay2(j)
         j++
     }
+
+    // Si no pierde, se coloca donde pueda tener una futura oportunidad
+    k = 0
+    while (!located && j < WINNINGS.length){
+        checkPlay3(j)
+        k++
+    }
+
+    // Si no puede hacer nada, elige un lugar desocupado al azar
     if (!located){
-        generateRandomPosition()
+        let randomPosition = generateRandomPosition()
+        play(randomPosition)
     }
 }
 
@@ -176,7 +189,7 @@ const checkWinner = () => {
     handlePlayerChange()
 }
 
-const handleCellClick = (event) => {
+const handleCellClick = event => {
     if (lockBoard) return
     const cellClicked = event.target
     
@@ -202,9 +215,7 @@ const resetGameStatus = () => {
         GAME_STATUS[i] = ""
         i--
     }
-    mixArray(WINNINGS)
 }
 
 $BTN_RESET.addEventListener('click', handleRestartGame)
 GAME_BOARD.addEventListener('click', handleCellClick)
-document.addEventListener("DOMContentLoaded", mixArray(WINNINGS))
