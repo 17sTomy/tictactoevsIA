@@ -45,7 +45,7 @@ h1{
 }
 
 .game-cell:hover{
-    background-color: #aacf0c;
+    background-color: #3AEEAA;
     border: 2px solid rgb(15, 15, 15);
 }
 
@@ -78,8 +78,7 @@ h1{
 }
 
 .game-restart:hover{
-    background-color: #aacf0c;
-    /* border: 1px solid rgb(15, 15, 15); */
+    background-color: #3AEEAA;
     color: rgb(15, 15, 15);
 }
 

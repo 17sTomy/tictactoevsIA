@@ -198,20 +198,7 @@ const handleCellClick = event => {
 }
 
 const handleRestartGame = () => {
-    resetGameStatus()
-    gameActive = true
-    draw = false
-    currentPlayer = "X"
-    showMessagge(currentPlayer)
-    document.querySelectorAll('.game-cell').forEach(cell => cell.innerHTML = "")
-}
-
-const resetGameStatus = () => {
-    i = WINNINGS.length
-    while (i >= 0){
-        GAME_STATUS[i] = ""
-        i--
-    }
+    location.reload()
 }
 
 $BTN_RESET.addEventListener('click', handleRestartGame)
