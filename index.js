@@ -91,12 +91,10 @@ const checkPlay = chance => {
     }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === "O"){
         play(position1)
     }
-
     //Siempre colocarse en el medio si está desocupado
     else if (GAME_STATUS.includes("X") && !GAME_STATUS.includes("O") && GAME_STATUS[4] !== "X"){
         play(4)
     }
-
     //Si el usuario se coloca en el medio, ponerse en alguna esquina
     else if (GAME_STATUS.includes("X") && !GAME_STATUS.includes("O") && GAME_STATUS[4] === "X"){
         let corner = goToCorners()
@@ -106,28 +104,24 @@ const checkPlay = chance => {
 
 const IAgame = () => {
     located = false
-
     // Primero chequea si puede ganar
     let i = 0
     while (!located && i < WINNINGS.length){
         checkPlay(i)
         i++
     } 
-
     // Si no puede ganar, se fija si puede perder
     j = 0
     while (!located && j < WINNINGS.length){
         checkPlay2(j)
         j++
     }
-
     // Si no pierde, se coloca donde pueda tener una futura oportunidad
     k = 0
     while (!located && k < WINNINGS.length){
         checkPlay3(k)
         k++
     }
-
     // Si no puede hacer nada, elige un lugar desocupado al azar
     if (!located){
         let randomPosition = generateRandomPosition()
