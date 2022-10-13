@@ -45,7 +45,7 @@ const goToCorners = () => {
     return corners[randomCorner]
 }
 
-const checkPlay3 = (chance) => {
+const checkPlay3 = chance => {
     const chances = WINNINGS[chance]
     let position1 = chances[0],
         position2 = chances[1],
