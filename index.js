@@ -53,14 +53,11 @@ const checkPlay3 = chance => {
     
     //Si tiene dos opciones libres, elige una
     if (GAME_STATUS[position1] === "O" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === ""){
-        play(position2)
-        return
+        play(position3)
     }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "O" && GAME_STATUS[position3] === ""){
         play(position1)
-        return
     }else if (GAME_STATUS[position1] === "" && GAME_STATUS[position2] === "" && GAME_STATUS[position3] === "O"){
-        play(position2)
-        return
+        play(position1)
     }
 }
 
@@ -126,8 +123,8 @@ const IAgame = () => {
 
     // Si no pierde, se coloca donde pueda tener una futura oportunidad
     k = 0
-    while (!located && j < WINNINGS.length){
-        checkPlay3(j)
+    while (!located && k < WINNINGS.length){
+        checkPlay3(k)
         k++
     }
 
